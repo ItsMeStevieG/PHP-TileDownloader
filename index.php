@@ -7,27 +7,16 @@ require_once("TileDownloader.class.php"); //Require Main class
 $td=new TileDownloader(); //Instantiate main class
 
 //Tile Service Config
-$CONFIG[0]["tileServiceName"]="OSM"; //Friendly Tile Service Name
-$CONFIG[0]["tileService"]="https://a.tile.openstreetmap.org"; //Tile Service URL without trailing slash /
-$CONFIG[0]["fileExtension"]=".png";
-$CONFIG[0]["destPath"]="tiles/osm"; // local storage directory Without trailing slash /
+$CONFIG[0]["tileServiceName"]="Six Aerial"; //Friendly Tile Service Name
+$CONFIG[0]["tileService"]="http://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Imagery/MapServer/tile"; //Tile Service URL without trailing slash /
+$CONFIG[0]["fileExtension"]="";
+$CONFIG[0]["destPath"]="tiles/six-aerial"; // local storage directory Without trailing slash /
 $CONFIG[0]["zoomStart"]="10"; //Start Zoom Level
 $CONFIG[0]["zoomEnd"]="11"; //End Zoom Level
 $CONFIG[0]["MinLng"]="151.36617122624398"; //SouthWest Lng
 $CONFIG[0]["MaxLng"]="152.6313316236804"; //NorthWest Lng
 $CONFIG[0]["MinLat"]="-28.249257948470415"; //NorthEast Lat
 $CONFIG[0]["MaxLat"]="-29.426018708820767"; //SouthWest Lat
-
-$CONFIG[1]["tileServiceName"]="Six Aerial"; //Friendly Tile Service Name
-$CONFIG[1]["tileService"]="http://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Imagery/MapServer/tile"; //Tile Service URL without trailing slash /
-$CONFIG[1]["fileExtension"]="";
-$CONFIG[1]["destPath"]="tiles/six-aerial"; // local storage directory Without trailing slash /
-$CONFIG[1]["zoomStart"]="10"; //Start Zoom Level
-$CONFIG[1]["zoomEnd"]="11"; //End Zoom Level
-$CONFIG[1]["MinLng"]="151.36617122624398"; //SouthWest Lng
-$CONFIG[1]["MaxLng"]="152.6313316236804"; //NorthWest Lng
-$CONFIG[1]["MinLat"]="-28.249257948470415"; //NorthEast Lat
-$CONFIG[1]["MaxLat"]="-29.426018708820767"; //SouthWest Lat
 
 ######################### DONT MODIFY BELOW THIS LINE ##############################
 foreach($CONFIG as $key=>$val)
