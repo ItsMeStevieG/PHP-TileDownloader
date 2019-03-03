@@ -188,29 +188,6 @@ class TileDownloader {
 	{
 		return floor((1 - log(tan($this->degTorad($lat)) + 1 / cos($this->degTorad($lat))) / M_PI) / 2 * pow(2, $zoom));
 	}
-	
-	public function dateDiff($date){
-		$seconds  = strtotime(date('Y-m-d H:i:s')) - strtotime($date);
-
-		$months = floor($seconds / (3600*24*30));
-		$day = floor($seconds / (3600*24));
-		$hours = floor($seconds / 3600);
-		$mins = floor(($seconds - ($hours*3600)) / 60);
-		$secs = floor($seconds % 60);
-
-		if($seconds < 60)
-			$time = $secs." second(s)";
-		else if($seconds < 60*60 )
-			$time = $mins." min(s)";
-		else if($seconds < 24*60*60)
-			$time = $hours." hour(s)";
-		else if($seconds < 24*60*60)
-			$time = $day." day(s)";
-		else
-			$time = $months." month(s)";
-
-		return $time;
-	}
 }
 
 ?>
