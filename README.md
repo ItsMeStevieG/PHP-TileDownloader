@@ -39,7 +39,7 @@ The End Zoom Lavel to finish capturing tiles at.
 
 This is the Bounding Box for the area in which to download tiles within. The Format is SouthWestLng,SouthWestLat,NorthEastLng,NorthEastLat (Left,Bottom,Right,Top)
 
-An Easier way to define a bounding box is to go to <a href="http://bboxfinder.com" target="_blank">BBox Finder</a> and draw a rectangle in the area you wish to capture tiles, make sure the coordinate format is in Lng / Lat then copy the box value at the bottom. you can then paste them into the ```$CONFIG[0]["BBox"]``` value.
+An Easier way to define a bounding box is to go to <a href="http://bboxfinder.com" target="_blank">BBox Finder</a> and draw a rectangle in the area you wish to capture tiles, make sure the coordinate format is in Lng / Lat then copy the box value at the bottom. You can then paste them into the ```$CONFIG[0]["BBox"]``` value.
 
 **Output File Naming**
 Output files will be stored under the ```$CONFIG[0]["destPath"]``` you specified. Output Example from the above configuration would be:  ```tiles/osm/{z}/{x}/{y}.png```
