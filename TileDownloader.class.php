@@ -8,6 +8,8 @@ class TileDownloader {
 	private $minZoom = 0;
 	private $maxZoom = 0;
 	
+	private $BBox = array();
+	
 	private $minLng = 0;
 	private $maxLng = 0;
 	
@@ -16,7 +18,7 @@ class TileDownloader {
 	
 	public $downImageCount = 0;
 
-	public function Download($fileExtension=".png") {
+	public function Download() {
 		$destImgPath = "";
 		$destImgName = "";
 		$tileServiceImg = "";
@@ -38,12 +40,12 @@ class TileDownloader {
 				//Foreach Tile Row
 				foreach (range($minX, $maxX) as $x)
 				{
-					$destImgPath = $this->getDestPath() . "/" . $z . "/" . $y;
-					$destImgName = $x . ".png";
-					$tileServiceImg = $this->getTileService() . "/" . $z . "/" . $y . "/" . $x	. $fileExtension;
+					$destImgPath = $this->getDestPath() . $z . "/" . $x . "/";
+					$destImgName = $destImgPath . $y . ".png";
+					$tileServiceImg = $this->getTileService($z,$x,$y);
 					
 					//Check if image exist.
-					if($checkFile=file_exists($destImgPath . "/" . $destImgName))
+					if($checkFile=file_exists($destImgName))
 					{
 						continue;
 					}
@@ -57,7 +59,7 @@ class TileDownloader {
 						
 						if($imgData = file_get_contents($tileServiceImg))
 						{
-							if(!file_put_contents($destImgPath."/".$destImgName,$imgData))
+							if(!file_put_contents($destImgName,$imgData))
 							{
 								return;
 							}
@@ -75,11 +77,23 @@ class TileDownloader {
 		return substr($headers[0], 9, 3);
 	}
 	
-	public function getTileService() {
-		return $this->tileService;
+	public function getTileService($z,$x,$y) {
+		$url=$this->tileService;
+		$has_matches = preg_match( '/{switch:(.*?)}/', $url, $domains );
+		if ( ! $has_matches ) {
+			$domains = [ '', '' ];
+		}
+		$domains = explode( ',', $domains[1] );
+		$url     = preg_replace( '/{switch:(.*?)}/', '{s}', $url );
+		$url     = preg_replace( '/{s}/', $domains[ array_rand( $domains ) ], $url );
+		$url     = preg_replace( '/{z}/', $z, $url );
+		$url     = preg_replace( '/{x}/', $x, $url );
+		$url     = preg_replace( '/{y}/', $y, $url );
+		return $url;
 	}
 
 	public function setTileService($tileService) {
+		
 		$this->tileService = $tileService;
 	}
 
@@ -107,6 +121,27 @@ class TileDownloader {
 		$this->maxZoom = $maxZoom;
 	}
 
+	public function getBBox()
+	{
+		return $this->BBox;
+	}
+	
+	public function setBBox($bbox)
+	{
+		$TMP        = explode( ',', $bbox );
+		$BBOX['left']=$TMP[0];
+		$BBOX['right']=$TMP[2];
+		$BBOX['top']=$TMP[3];
+		$BBOX['bottom']=$TMP[1];
+		
+		$this->setMinLat($BBOX['top']);
+		$this->setMaxLat($BBOX['bottom']);
+		$this->setMinLng($BBOX['left']);
+		$this->setMaxLng($BBOX['right']);
+		
+		$this->BBox=$BBOX;
+	}
+	
 	public function getMinLng() {
 		return $this->minLng;
 	}
@@ -144,14 +179,37 @@ class TileDownloader {
 		return $deg * M_PI / 180;
 	}
 	
-   private function lonToTileX($lon, $zoom)
+    private function lonToTileX($lon, $zoom)
 	{
 		return floor((($lon + 180) / 360) * pow(2, $zoom));
 	}
 	
-   private function latToTileY($lat, $zoom)
+    private function latToTileY($lat, $zoom)
 	{
 		return floor((1 - log(tan($this->degTorad($lat)) + 1 / cos($this->degTorad($lat))) / M_PI) / 2 * pow(2, $zoom));
+	}
+	
+	public function dateDiff($date){
+		$seconds  = strtotime(date('Y-m-d H:i:s')) - strtotime($date);
+
+		$months = floor($seconds / (3600*24*30));
+		$day = floor($seconds / (3600*24));
+		$hours = floor($seconds / 3600);
+		$mins = floor(($seconds - ($hours*3600)) / 60);
+		$secs = floor($seconds % 60);
+
+		if($seconds < 60)
+			$time = $secs." second(s)";
+		else if($seconds < 60*60 )
+			$time = $mins." min(s)";
+		else if($seconds < 24*60*60)
+			$time = $hours." hour(s)";
+		else if($seconds < 24*60*60)
+			$time = $day." day(s)";
+		else
+			$time = $months." month(s)";
+
+		return $time;
 	}
 }
 
