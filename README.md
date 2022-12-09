@@ -17,7 +17,7 @@ $CONFIG[0]["BBox"]="151.901436,-29.140467,152.131119,-28.961290"; //Format South
 ````
 **1. ```$CONFIG[0]["tileServiceName"]```**
  
-This is the friendly name for the tile service ie. OopenStreetMaps, Six-Maps etc
+This is the friendly name for the tile service ie. OpenStreetMaps, Six-Maps etc
 
 **2. ```$CONFIG[0]["tileService"]```**
 
